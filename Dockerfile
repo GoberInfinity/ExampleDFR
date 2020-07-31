@@ -12,4 +12,7 @@ WORKDIR code
 EXPOSE 8000
 
 # Run the production server
-CMD newrelic-admin run-program gunicorn --bind 0.0.0.0:$PORT --access-logfile - api.wsgi:application
+# Gunicorn relies on the operating system to provide all of the load balancing when handling requests.
+# Generally we recommend (2 x $num_cores) + 1 as the number of workers to start off
+# Type of worker_class (-k) set to eventlet
+CMD newrelic-admin run-program gunicorn --workers=5 -k eventlet --bind 0.0.0.0:$PORT --access-logfile - api.wsgi:application
