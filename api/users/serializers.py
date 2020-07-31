@@ -23,3 +23,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'email', 'auth_token',)
         read_only_fields = ('auth_token',)
         extra_kwargs = {'password': {'write_only': True}}
+
+class FileUploadSerializer(serializers.Serializer):
+
+    file = serializers.FileField(use_url=False)
