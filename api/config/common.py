@@ -21,6 +21,7 @@ class Common(Configuration):
         'rest_framework',            # utilities for rest apis
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
+        'storages',                  # S3 Storage
 
         # Your apps
         'api.users',
@@ -198,4 +199,22 @@ class Common(Configuration):
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
         )
+    }
+
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/2.0/howto/static-files/
+    # http://django-storages.readthedocs.org/en/latest/index.html
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_QUERYSTRING_AUTH = False
+    MEDIA_URL = f'https://s3.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/'
+
+    # https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#cache-control
+    # Response can be cached by browser and any intermediary caches (i.e. it is "public") for up to 1 day
+    # 86400 = (60 seconds x 60 minutes x 24 hours)
+    AWS_HEADERS = {
+        'Cache-Control': 'max-age=86400, s-maxage=86400, must-revalidate',
     }
