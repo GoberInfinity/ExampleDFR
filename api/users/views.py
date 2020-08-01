@@ -85,3 +85,13 @@ class FileUploadViewSet(viewsets.GenericViewSet):
 
         # serializer = DataSerializer(data=file_to_upload)
         return Response(status=status.HTTP_201_CREATED)
+
+class DataViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
+    """
+    Retrieves all the data uploaded by the csv file
+    """
+    queryset = Data.objects.all()
+    serializer_class = DataSerializer
+    permission_classes = (AllowAny,)

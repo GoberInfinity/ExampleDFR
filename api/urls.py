@@ -10,6 +10,7 @@ from .users.views import UserViewSet, UserCreateViewSet, FileUploadViewSet, Data
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
+router.register(r'data', DataViewSet, basename='data-view')
 router.register(r'upload', FileUploadViewSet, basename='file-upload')
 
 
