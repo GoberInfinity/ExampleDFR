@@ -59,7 +59,7 @@ The documentation was created using [MkDocs](https://www.mkdocs.org/) if you wan
 The code was cleaned up using [flake8](https://flake8.pycqa.org/en/latest/) if you want to check any potential errors run:
 
 ```bash
-docker-compose run --rm web flake8
+docker-compose run --rm web flake8 .
 ```
 
 #### CI
