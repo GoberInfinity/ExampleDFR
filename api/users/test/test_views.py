@@ -3,7 +3,6 @@ from django.contrib.auth.hashers import check_password
 from nose.tools import ok_, eq_
 from rest_framework.test import APITestCase
 from rest_framework import status
-from faker import Faker
 import factory
 from ..models import User
 from .factories import UserFactory, DataFactory

@@ -1,7 +1,5 @@
 from io import StringIO
 from uuid import uuid1
-from django.http import JsonResponse
-from django.views import View
 from django.conf import settings
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import AllowAny

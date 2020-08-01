@@ -21,7 +21,8 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class Data(models.Model):
-    # UUID is made of up of hex digits (4 chars each) along with 4 “-” symbols which make its length equal to 36 characters.
+    # UUID is made of up of hex digits (4 chars each) along with 4 “-” symbols which
+    # make its length equal to 36 characters.
     transaction_id = models.CharField(max_length=40)
     # A DateField¶ can fit better but we need to be sure to parse the data correctly
     transaction_date = models.CharField(max_length=10)
