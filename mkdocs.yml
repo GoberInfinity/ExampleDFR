@@ -4,9 +4,12 @@ repo_url: https://github.com/GoberInfinity/ExampleDFR
 site_dir: site
 copyright: Copyright &copy; 2020, <a href="https://github.com/GoberInfinity">GoberInfinity</a>.
 dev_addr: 0.0.0.0:8001
+theme: readthedocs
 
 nav:
-  - Home: 'index.md'
+  - Home: "index.md"
   - API:
-    - Authentication: 'api/authentication.md'
-    - Users: 'api/users.md'
+      - Authentication: "api/authentication.md"
+      - Users: "api/users.md"
+      - Upload File: "api/upload.md"
+      - Data: "api/data.md"
