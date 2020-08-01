@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.parsers import FileUploadParser
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework import filters
 from rest_framework import status
 from .models import User, Data
 from .permissions import IsUserOrReadOnly
@@ -94,3 +95,6 @@ class DataViewSet(mixins.ListModelMixin,
     queryset = Data.objects.all()
     serializer_class = DataSerializer
     permission_classes = (AllowAny,)
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['transaction_id', 'transaction_date', 'client_name']
+    ordering_fields = '__all__'
