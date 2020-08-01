@@ -1,6 +1,5 @@
 import factory
 
-
 class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
@@ -16,3 +15,13 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker('last_name')
     is_active = True
     is_staff = False
+
+class DataFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'users.Data'
+
+    transaction_id = factory.Faker('uuid4')
+    transaction_date = factory.Faker('date')
+    transaction_amount = factory.Faker('pyint')
+    client_id = factory.Faker('pyint')
+    client_name = factory.Faker('name')

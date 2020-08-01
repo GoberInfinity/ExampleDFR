@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.forms.models import model_to_dict
 from django.contrib.auth.hashers import check_password
 from nose.tools import eq_, ok_
-from .factories import UserFactory
-from ..serializers import CreateUserSerializer
+from .factories import UserFactory, DataFactory
+from ..serializers import CreateUserSerializer, DataSerializer
 
 
 class TestCreateUserSerializer(TestCase):
@@ -25,3 +25,15 @@ class TestCreateUserSerializer(TestCase):
 
         user = serializer.save()
         ok_(check_password(self.user_data.get('password'), user.password))
+
+class TestCreateDataSerializer(TestCase):
+    def setUp(self):
+        self.data = model_to_dict(DataFactory.build())
+
+    def test_serializer_with_empty_data(self):
+        serializer = DataSerializer(data={})
+        eq_(serializer.is_valid(), False)
+
+    def test_serializer_with_valid_data(self):
+        serializer = DataSerializer(data=self.data)
+        ok_(serializer.is_valid())
