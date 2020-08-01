@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,6 +24,17 @@ class CreateUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('auth_token',)
         extra_kwargs = {'password': {'write_only': True}}
 
-class FileUploadSerializer(serializers.Serializer):
 
+class DataSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        """
+        Create and return a new `Data` instance, given the validated data.
+        """
+        return Data.objects.create(**validated_data)
+
+    class Meta:
+        model = Data
+        fields = ('transaction_id', 'transaction_date', 'transaction_amount', 'client_id', 'client_name')
+
+class FileUploadSerializer(serializers.Serializer):
     file = serializers.FileField(use_url=False)

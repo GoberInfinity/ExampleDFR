@@ -1,3 +1,4 @@
+from io import StringIO
 from uuid import uuid1
 from django.http import JsonResponse
 from django.views import View
@@ -8,10 +9,11 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User
+from .models import User, Data
 from .permissions import IsUserOrReadOnly
-from .serializers import CreateUserSerializer, UserSerializer, FileUploadSerializer
+from .serializers import CreateUserSerializer, UserSerializer, FileUploadSerializer, DataSerializer
 from boto3 import resource
+import pandas as pd
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
@@ -43,6 +45,8 @@ class FileUploadViewSet(viewsets.GenericViewSet):
     serializer_class = FileUploadSerializer
     permission_classes = (AllowAny,)
     file_field = 'file'
+    # It is possible to add more missing data to the csv files, those are merely some examples
+    missing_values = ["n/a", "na", "--"]
 
     def create(self, request):
         file_to_upload = request.data.get(self.file_field)
@@ -52,6 +56,32 @@ class FileUploadViewSet(viewsets.GenericViewSet):
         # S3 crated here instead of a singleton, because we will need it once
         # Using uuid to create unique identifiers for the name inside the bucket
         # https://en.wikipedia.org/wiki/Universally_unique_identifier
-        resource('s3').Object(settings.AWS_STORAGE_BUCKET_NAME,
-                              f'{uuid1()}-{file_to_upload}').put(Body=file_to_upload)
+        # resource('s3').Object(settings.AWS_STORAGE_BUCKET_NAME,
+        #                      f'{uuid1()}-{file_to_upload}').put(Body=file_to_upload)
+
+        # I check for spurious data first if the data is bad we mark them as na_values
+        # Most of the operations of pandas can be replaces by the built in csv module
+        transactions = pd.read_csv(
+            StringIO(file_to_upload.read().decode('utf-8')), na_values=self.missing_values)
+
+        # It will be better to insert the bad data in other database instead of droppong
+        transactions.dropna()
+
+        # You can run a distributed queue speed up the process but I wanted to be
+        # sure the atomicity of the database insertion, also the server will handle
+        # all the request because of the configuration of gunicorn
+        transaction_iter = transactions.iterrows()
+        transaction_to_database = [
+            Data(
+                transaction_id=row['transaction_id'],
+                transaction_date=row['transaction_date'],
+                transaction_amount=row['transaction_amount'],
+                client_id=row['client_id'],
+                client_name=row['client_name'],
+            )
+            for index, row in transaction_iter
+        ]
+        Data.objects.bulk_create(transaction_to_database)
+
+        # serializer = DataSerializer(data=file_to_upload)
         return Response(status=status.HTTP_201_CREATED)

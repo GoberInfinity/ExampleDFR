@@ -5,12 +5,13 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
-from .users.views import UserViewSet, UserCreateViewSet, FileUploadViewSet
+from .users.views import UserViewSet, UserCreateViewSet, FileUploadViewSet, DataViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users', UserCreateViewSet)
 router.register(r'upload', FileUploadViewSet, basename='file-upload')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
