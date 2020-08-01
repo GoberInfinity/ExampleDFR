@@ -34,10 +34,10 @@ You can access the api using the following urls:
 
 | Url                              | Description                                                    |
 | -------------------------------- | -------------------------------------------------------------- |
-| localhost:8005/api/v1/users/     | Creates users into Django Users Models                         |
-| localhost:8005/api/v1/users/:id/ | Detail about an user                                           |
-| localhost:8005/api/v1/upload/    | Uploads a csv file to s3 and puts all the info in the database |
-| localhost:8005/api/v1/data/      | Retrieves all information of all csv files from the database   |
+| localhost:8000/api/v1/users/     | Creates users into Django Users Models                         |
+| localhost:8000/api/v1/users/:id/ | Detail about an user                                           |
+| localhost:8000/api/v1/upload/    | Uploads a csv file to s3 and puts all the info in the database |
+| localhost:8000/api/v1/data/      | Retrieves all information of all csv files from the database   |
 
 **Note**: If you would like to see more information about each endpoint and how it works check the _documentation_ section
 
