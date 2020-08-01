@@ -9,7 +9,7 @@ Example of Django REST framework.
 
 ## Development
 
-The project uses PostreSQL as a database and the server is running gunicorn with 5 workers configured as async to be to handle more than one request and not be bounded to that request until it's finished
+The project uses postgresql as a database and the server is running gunicorn with 5 workers configured as async to be to handle more than one request and not be bounded to that request until it's finished
 
 #### Run the project
 
@@ -17,7 +17,10 @@ The project uses PostreSQL as a database and the server is running gunicorn with
 
    - AWS_ACCESS_KEY_ID
    - AWS_SECRET_ACCESS_KEY
+   - AWS_STORAGE_BUCKET_NAME
    - AWS_SESSION_TOKEN
+
+     **Note**: The AWS_SESSION_TOKEN is optional, set it if your aws configuration needs it
 
 1. Start the dev server for local development:
 
@@ -28,7 +31,6 @@ The project uses PostreSQL as a database and the server is running gunicorn with
 #### Endpoints
 
 You can access the api using the following urls:
-**Note**: If you would like to see more information about each endpoint and how it works check the _documentation_ section
 
 | Url                              | Description                                                    |
 | -------------------------------- | -------------------------------------------------------------- |
@@ -36,6 +38,8 @@ You can access the api using the following urls:
 | localhost:8005/api/v1/users/:id/ | Detail about an user                                           |
 | localhost:8005/api/v1/upload/    | Uploads a csv file to s3 and puts all the info in the database |
 | localhost:8005/api/v1/data/      | Retrieves all information of all csv files from the database   |
+
+**Note**: If you would like to see more information about each endpoint and how it works check the _documentation_ section
 
 #### Testing
 
