@@ -43,4 +43,4 @@ django-storages==1.9.1
 boto3==1.14.28
 
 # Data Processing
-pandas==1.1.0 
+pandas==1.1.0

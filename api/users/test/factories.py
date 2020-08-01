@@ -19,6 +19,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 class DataFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'users.Data'
+        django_get_or_create = ('transaction_id',)
 
     transaction_id = factory.Faker('uuid4')
     transaction_date = factory.Faker('date')

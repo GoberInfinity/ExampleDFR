@@ -6,9 +6,7 @@ from rest_framework import status
 from faker import Faker
 import factory
 from ..models import User
-from .factories import UserFactory
-
-fake = Faker()
+from .factories import UserFactory, DataFactory
 
 
 class TestUserListTestCase(APITestCase):
@@ -47,11 +45,28 @@ class TestUserDetailTestCase(APITestCase):
         response = self.client.get(self.url)
         eq_(response.status_code, status.HTTP_200_OK)
 
-    def test_put_request_updates_a_user(self):
-        new_first_name = fake.first_name()
-        payload = {'first_name': new_first_name}
-        response = self.client.put(self.url, payload)
-        eq_(response.status_code, status.HTTP_200_OK)
+class TestUploadTestCase(APITestCase):
+    """
+    Tests /upload operations
+    """
 
-        user = User.objects.get(pk=self.user.id)
-        eq_(user.first_name, new_first_name)
+    def setUp(self):
+        self.url = reverse('file-upload-list')
+
+    def test_post_request_with_no_data_fails(self):
+        response = self.client.post(self.url, {})
+        eq_(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TestDataTestCase(APITestCase):
+    """
+    Test /data operations
+    """
+
+    def setUp(self):
+        self.user = DataFactory()
+        self.url = reverse('data-view-list')
+
+    def test_get_request_returns_a_given_user(self):
+        response = self.client.get(self.url)
+        eq_(response.status_code, status.HTTP_200_OK)
