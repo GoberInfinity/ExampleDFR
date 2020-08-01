@@ -53,11 +53,11 @@ class FileUploadViewSet(viewsets.GenericViewSet):
         if not file_to_upload or not str(file_to_upload).endswith('.csv'):
             raise ParseError("Error loading the content")
 
-        # S3 crated here instead of a singleton, because we will need it once
+        # S3 created here instead of a singleton, because we will need it once
         # Using uuid to create unique identifiers for the name inside the bucket
         # https://en.wikipedia.org/wiki/Universally_unique_identifier
-        # resource('s3').Object(settings.AWS_STORAGE_BUCKET_NAME,
-        #                      f'{uuid1()}-{file_to_upload}').put(Body=file_to_upload)
+        resource('s3').Object(settings.AWS_STORAGE_BUCKET_NAME,
+                              f'{uuid1()}-{file_to_upload}').put(Body=file_to_upload)
 
         # I check for spurious data first if the data is bad we mark them as na_values
         # Most of the operations of pandas can be replaces by the built in csv module
@@ -83,7 +83,6 @@ class FileUploadViewSet(viewsets.GenericViewSet):
         ]
         Data.objects.bulk_create(transaction_to_database)
 
-        # serializer = DataSerializer(data=file_to_upload)
         return Response(status=status.HTTP_201_CREATED)
 
 class DataViewSet(mixins.ListModelMixin,
