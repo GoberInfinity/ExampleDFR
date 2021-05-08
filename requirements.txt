@@ -7,7 +7,7 @@ newrelic==5.14.1.144
 
 # Async Workers in Gunicorn
 dnspython==1.16.0
-eventlet==0.26.1
+eventlet==0.31.0
 greenlet==0.4.16
 monotonic==1.5
 six==1.15.0
